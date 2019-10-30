@@ -304,9 +304,9 @@ def recurse_dir(path: Path):
     return files
 
 for collection_file in recurse_dir(dpath):
-    iPath = iHome + "/" + str(collection_file.relative_to(current_dir))
-    newColl = session.collections.create(iPath)
-    session.data_objects.put(str(collection_file), iPath)
+    iPath = Path(iHome) / collection_file.relative_to(current_dir)
+    newColl = session.collections.create(str(iPath.parent))
+    session.data_objects.put(str(collection_file), str(iPath))
 ```    
 
 There is mixed tab and whitespace in the code. When copy&paste the code, it is not working,
