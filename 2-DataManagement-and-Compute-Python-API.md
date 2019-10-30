@@ -285,21 +285,29 @@ coll.subcollections
 To upload a collection from the unix file system one has to iterate over the directory and create collections and data objects.
 We will upload the directory 'aliceInWonderland'
 
-```py
-import os
-dPath = os.environ['HOME'] + '/aliceInWonderland'
-walk = [dPath]
-while len(walk) > 0:
-    for srcDir, dirs, files in os.walk(walk.pop()):
-        print(srcDir, dirs, files)
-        walk.extend(dirs)
-        iPath = iHome + srcDir.split(os.environ['HOME'])[1]
-        print("CREATE", iPath)
-        newColl = session.collections.create(iPath)
-        for fname in files:
-            print("CREATE", newColl.path+'/'+fname)
-            session.data_objects.put(srcDir+'/'+fname, newColl.path+'/'+fname)
-```
+```python
+from pathlib import Path
+
+# Plain 'Path()' refers to '.' or current working directory.
+dpath = (Path() / Path(aliceInWonderland')).absolute()
+current_dir = Path().absolute()
+
+def recurse_dir(path: Path):
+    files = []
+    if path.is_dir():
+    	for sub_path in path.iterdir():
+	    files.extend(recurse_dir(path))
+    elif path.is_file():
+    	files.append(path)
+    else:  # Skip block devices and other stuff
+    	pass
+    return files
+
+for collection_file in recurse_dir(dpath):
+    iPath = Path(iHome) / collection_file.relative_to(current_dir)
+    newColl = session.collections.create(str(iPath.parent))
+    session.data_objects.put(str(collection_file), str(iPath))
+```    
 
 There is mixed tab and whitespace in the code. When copy&paste the code, it is not working,
 The standard recommends 4 spaces.
