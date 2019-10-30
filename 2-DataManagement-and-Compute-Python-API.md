@@ -304,7 +304,7 @@ def recurse_dir(path: Path):
     return files
 
 for collection_file in recurse_dir(dpath):
-    iPath = iHome + collection_file.relative_to(current_dir)
+    iPath = iHome + "/" + str(collection_file.relative_to(current_dir))
     newColl = session.collections.create(iPath)
     session.data_objects.put(str(collection_file), iPath)
 ```    
