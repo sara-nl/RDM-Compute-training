@@ -303,7 +303,7 @@ def recurse_dir(path: Path):
     	pass
     return files
 
-for collection_file in recurse_dir(dpath.absolute()):
+for collection_file in recurse_dir(dpath):
     iPath = iHome + collection_file.relative_to(current_dir)
     newColl = session.collections.create(iPath)
     session.data_objects.put(str(collection_file), iPath)
