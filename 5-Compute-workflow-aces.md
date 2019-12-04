@@ -51,6 +51,7 @@ Adjust all parameters in the jobscript `jobscript_aces`:
 #Set job requirements
 #SBATCH -N 1
 #SBATCH -t 15:00
+#SBATCH -p short
 
 #iRODS + Python
 module load pre2019
